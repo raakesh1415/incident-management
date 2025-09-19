@@ -1,0 +1,6 @@
+VIEW localized_ProcessorService_Status AS SELECT
+  Status_0.name,
+  Status_0.descr,
+  Status_0.code,
+  Status_0.criticality
+FROM localized_sap_capire_incidents_Status AS Status_0

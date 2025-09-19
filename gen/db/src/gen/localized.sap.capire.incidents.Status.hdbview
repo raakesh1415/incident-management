@@ -1,0 +1,6 @@
+VIEW localized_sap_capire_incidents_Status AS SELECT
+  coalesce(localized_1.name, L_0.name) AS name,
+  coalesce(localized_1.descr, L_0.descr) AS descr,
+  L_0.code,
+  L_0.criticality
+FROM (sap_capire_incidents_Status AS L_0 LEFT JOIN sap_capire_incidents_Status_texts AS localized_1 ON localized_1.code = L_0.code AND localized_1.locale = SESSION_CONTEXT('LOCALE'))

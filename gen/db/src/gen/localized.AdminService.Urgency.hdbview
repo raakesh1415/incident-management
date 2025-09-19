@@ -1,0 +1,5 @@
+VIEW localized_AdminService_Urgency AS SELECT
+  Urgency_0.name,
+  Urgency_0.descr,
+  Urgency_0.code
+FROM localized_sap_capire_incidents_Urgency AS Urgency_0

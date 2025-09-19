@@ -1,0 +1,16 @@
+COLUMN TABLE ProcessorService_Incidents_drafts (
+  ID NVARCHAR(36) NOT NULL,
+  createdAt TIMESTAMP NULL,
+  createdBy NVARCHAR(255) NULL,
+  modifiedAt TIMESTAMP NULL,
+  modifiedBy NVARCHAR(255) NULL,
+  customer_ID NVARCHAR(5000) NULL,
+  title NVARCHAR(5000) NULL,
+  urgency_code NVARCHAR(5000) NULL DEFAULT 'M',
+  status_code NVARCHAR(5000) NULL DEFAULT 'N',
+  IsActiveEntity BOOLEAN,
+  HasActiveEntity BOOLEAN,
+  HasDraftEntity BOOLEAN,
+  DraftAdministrativeData_DraftUUID NVARCHAR(36) NOT NULL,
+  PRIMARY KEY(ID)
+)

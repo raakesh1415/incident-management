@@ -1,0 +1,13 @@
+VIEW ProcessorService_Customers AS SELECT
+  Customers_0.createdAt,
+  Customers_0.createdBy,
+  Customers_0.modifiedAt,
+  Customers_0.modifiedBy,
+  Customers_0.ID,
+  Customers_0.firstName,
+  Customers_0.lastName,
+  Customers_0.firstName || ' ' || Customers_0.lastName AS name,
+  Customers_0.email,
+  Customers_0.phone,
+  Customers_0.creditCardNo
+FROM sap_capire_incidents_Customers AS Customers_0

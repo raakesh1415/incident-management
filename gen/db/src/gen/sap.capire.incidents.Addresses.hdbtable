@@ -1,0 +1,12 @@
+COLUMN TABLE sap_capire_incidents_Addresses (
+  ID NVARCHAR(36) NOT NULL,
+  createdAt TIMESTAMP,
+  createdBy NVARCHAR(255),
+  modifiedAt TIMESTAMP,
+  modifiedBy NVARCHAR(255),
+  customer_ID NVARCHAR(5000),
+  city NVARCHAR(5000),
+  postCode NVARCHAR(5000),
+  streetAddress NVARCHAR(5000),
+  PRIMARY KEY(ID)
+)

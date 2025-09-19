@@ -1,0 +1,3307 @@
+{
+  "namespace": "sap.capire.incidents",
+  "definitions": {
+    "sap.capire.incidents.Incidents": {
+      "kind": "entity",
+      "includes": [
+        "cuid",
+        "managed"
+      ],
+      "elements": {
+        "ID": {
+          "key": true,
+          "type": "cds.UUID"
+        },
+        "createdAt": {
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@UI.HiddenFilter": true,
+          "@UI.ExcludeFromNavigationContext": true,
+          "@Core.Immutable": true,
+          "@title": "{i18n>CreatedAt}",
+          "@readonly": true,
+          "type": "cds.Timestamp"
+        },
+        "createdBy": {
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@UI.HiddenFilter": true,
+          "@UI.ExcludeFromNavigationContext": true,
+          "@Core.Immutable": true,
+          "@title": "{i18n>CreatedBy}",
+          "@readonly": true,
+          "@description": "{i18n>UserID.Description}",
+          "type": "User",
+          "length": 255
+        },
+        "modifiedAt": {
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@cds.on.update": {
+            "=": "$now"
+          },
+          "@UI.HiddenFilter": true,
+          "@UI.ExcludeFromNavigationContext": true,
+          "@title": "{i18n>ChangedAt}",
+          "@readonly": true,
+          "type": "cds.Timestamp"
+        },
+        "modifiedBy": {
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@cds.on.update": {
+            "=": "$user"
+          },
+          "@UI.HiddenFilter": true,
+          "@UI.ExcludeFromNavigationContext": true,
+          "@title": "{i18n>ChangedBy}",
+          "@readonly": true,
+          "@description": "{i18n>UserID.Description}",
+          "type": "User",
+          "length": 255
+        },
+        "customer": {
+          "type": "cds.Association",
+          "target": "sap.capire.incidents.Customers",
+          "keys": [
+            {
+              "ref": [
+                "ID"
+              ]
+            }
+          ]
+        },
+        "title": {
+          "@title": "Title",
+          "type": "cds.String"
+        },
+        "urgency": {
+          "type": "cds.Association",
+          "target": "sap.capire.incidents.Urgency",
+          "keys": [
+            {
+              "ref": [
+                "code"
+              ]
+            }
+          ],
+          "default": {
+            "val": "M"
+          }
+        },
+        "status": {
+          "type": "cds.Association",
+          "target": "sap.capire.incidents.Status",
+          "keys": [
+            {
+              "ref": [
+                "code"
+              ]
+            }
+          ],
+          "default": {
+            "val": "N"
+          }
+        },
+        "conversation": {
+          "type": "cds.Composition",
+          "cardinality": {
+            "max": "*"
+          },
+          "targetAspect": {
+            "elements": {
+              "ID": {
+                "key": true,
+                "type": "cds.UUID"
+              },
+              "timestamp": {
+                "@cds.on.insert": {
+                  "=": "$now"
+                },
+                "@UI.HiddenFilter": true,
+                "@UI.ExcludeFromNavigationContext": true,
+                "@Core.Immutable": true,
+                "@title": "{i18n>CreatedAt}",
+                "@readonly": true,
+                "type": {
+                  "ref": [
+                    "managed",
+                    "createdAt"
+                  ]
+                }
+              },
+              "author": {
+                "@cds.on.insert": {
+                  "=": "$user"
+                },
+                "@UI.HiddenFilter": true,
+                "@UI.ExcludeFromNavigationContext": true,
+                "@Core.Immutable": true,
+                "@title": "{i18n>CreatedBy}",
+                "@readonly": true,
+                "@description": "{i18n>UserID.Description}",
+                "type": {
+                  "ref": [
+                    "managed",
+                    "createdBy"
+                  ]
+                },
+                "length": 255
+              },
+              "message": {
+                "type": "cds.String"
+              }
+            }
+          },
+          "target": "sap.capire.incidents.Incidents.conversation",
+          "on": [
+            {
+              "ref": [
+                "conversation",
+                "up_"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$self"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "sap.capire.incidents.Customers": {
+      "kind": "entity",
+      "includes": [
+        "managed"
+      ],
+      "elements": {
+        "createdAt": {
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@UI.HiddenFilter": true,
+          "@UI.ExcludeFromNavigationContext": true,
+          "@Core.Immutable": true,
+          "@title": "{i18n>CreatedAt}",
+          "@readonly": true,
+          "type": "cds.Timestamp"
+        },
+        "createdBy": {
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@UI.HiddenFilter": true,
+          "@UI.ExcludeFromNavigationContext": true,
+          "@Core.Immutable": true,
+          "@title": "{i18n>CreatedBy}",
+          "@readonly": true,
+          "@description": "{i18n>UserID.Description}",
+          "type": "User",
+          "length": 255
+        },
+        "modifiedAt": {
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@cds.on.update": {
+            "=": "$now"
+          },
+          "@UI.HiddenFilter": true,
+          "@UI.ExcludeFromNavigationContext": true,
+          "@title": "{i18n>ChangedAt}",
+          "@readonly": true,
+          "type": "cds.Timestamp"
+        },
+        "modifiedBy": {
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@cds.on.update": {
+            "=": "$user"
+          },
+          "@UI.HiddenFilter": true,
+          "@UI.ExcludeFromNavigationContext": true,
+          "@title": "{i18n>ChangedBy}",
+          "@readonly": true,
+          "@description": "{i18n>UserID.Description}",
+          "type": "User",
+          "length": 255
+        },
+        "ID": {
+          "key": true,
+          "type": "cds.String"
+        },
+        "firstName": {
+          "type": "cds.String"
+        },
+        "lastName": {
+          "type": "cds.String"
+        },
+        "name": {
+          "@Core.Computed": true,
+          "type": "cds.String",
+          "value": {
+            "xpr": [
+              {
+                "ref": [
+                  "firstName"
+                ]
+              },
+              "||",
+              {
+                "val": " "
+              },
+              "||",
+              {
+                "ref": [
+                  "lastName"
+                ]
+              }
+            ]
+          }
+        },
+        "email": {
+          "type": "sap.capire.incidents.EMailAddress"
+        },
+        "phone": {
+          "type": "sap.capire.incidents.PhoneNumber"
+        },
+        "incidents": {
+          "type": "cds.Association",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "sap.capire.incidents.Incidents",
+          "on": [
+            {
+              "ref": [
+                "incidents",
+                "customer"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$self"
+              ]
+            }
+          ]
+        },
+        "creditCardNo": {
+          "@assert.format": "^[1-9]\\d{15}$",
+          "type": "cds.String",
+          "length": 16
+        },
+        "addresses": {
+          "type": "cds.Composition",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "sap.capire.incidents.Addresses",
+          "on": [
+            {
+              "ref": [
+                "addresses",
+                "customer"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$self"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "sap.capire.incidents.Addresses": {
+      "kind": "entity",
+      "includes": [
+        "cuid",
+        "managed"
+      ],
+      "elements": {
+        "ID": {
+          "key": true,
+          "type": "cds.UUID"
+        },
+        "createdAt": {
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@UI.HiddenFilter": true,
+          "@UI.ExcludeFromNavigationContext": true,
+          "@Core.Immutable": true,
+          "@title": "{i18n>CreatedAt}",
+          "@readonly": true,
+          "type": "cds.Timestamp"
+        },
+        "createdBy": {
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@UI.HiddenFilter": true,
+          "@UI.ExcludeFromNavigationContext": true,
+          "@Core.Immutable": true,
+          "@title": "{i18n>CreatedBy}",
+          "@readonly": true,
+          "@description": "{i18n>UserID.Description}",
+          "type": "User",
+          "length": 255
+        },
+        "modifiedAt": {
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@cds.on.update": {
+            "=": "$now"
+          },
+          "@UI.HiddenFilter": true,
+          "@UI.ExcludeFromNavigationContext": true,
+          "@title": "{i18n>ChangedAt}",
+          "@readonly": true,
+          "type": "cds.Timestamp"
+        },
+        "modifiedBy": {
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@cds.on.update": {
+            "=": "$user"
+          },
+          "@UI.HiddenFilter": true,
+          "@UI.ExcludeFromNavigationContext": true,
+          "@title": "{i18n>ChangedBy}",
+          "@readonly": true,
+          "@description": "{i18n>UserID.Description}",
+          "type": "User",
+          "length": 255
+        },
+        "customer": {
+          "type": "cds.Association",
+          "target": "sap.capire.incidents.Customers",
+          "keys": [
+            {
+              "ref": [
+                "ID"
+              ]
+            }
+          ]
+        },
+        "city": {
+          "type": "cds.String"
+        },
+        "postCode": {
+          "type": "cds.String"
+        },
+        "streetAddress": {
+          "type": "cds.String"
+        }
+      }
+    },
+    "sap.capire.incidents.Status": {
+      "kind": "entity",
+      "@cds.autoexpose": true,
+      "@cds.persistence.skip": "if-unused",
+      "@UI.Identification": [
+        {
+          "Value": {
+            "=": "name"
+          }
+        }
+      ],
+      "@cds.odata.valuelist": true,
+      "includes": [
+        "sap.common.CodeList"
+      ],
+      "elements": {
+        "name": {
+          "@title": "{i18n>Name}",
+          "localized": true,
+          "type": "cds.String",
+          "length": 255
+        },
+        "descr": {
+          "@title": "{i18n>Description}",
+          "localized": true,
+          "type": "cds.String",
+          "length": 1000
+        },
+        "code": {
+          "key": true,
+          "type": "cds.String",
+          "enum": {
+            "new": {
+              "val": "N"
+            },
+            "assigned": {
+              "val": "A"
+            },
+            "in_process": {
+              "val": "I"
+            },
+            "on_hold": {
+              "val": "H"
+            },
+            "resolved": {
+              "val": "R"
+            },
+            "closed": {
+              "val": "C"
+            }
+          }
+        },
+        "criticality": {
+          "type": "cds.Integer"
+        },
+        "texts": {
+          "type": "cds.Composition",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "sap.capire.incidents.Status.texts",
+          "on": [
+            {
+              "ref": [
+                "texts",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            }
+          ]
+        },
+        "localized": {
+          "type": "cds.Association",
+          "target": "sap.capire.incidents.Status.texts",
+          "on": [
+            {
+              "ref": [
+                "localized",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            },
+            "and",
+            {
+              "ref": [
+                "localized",
+                "locale"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$user",
+                "locale"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "sap.capire.incidents.Urgency": {
+      "kind": "entity",
+      "@cds.autoexpose": true,
+      "@cds.persistence.skip": "if-unused",
+      "@UI.Identification": [
+        {
+          "Value": {
+            "=": "name"
+          }
+        }
+      ],
+      "@cds.odata.valuelist": true,
+      "includes": [
+        "sap.common.CodeList"
+      ],
+      "elements": {
+        "name": {
+          "@title": "{i18n>Name}",
+          "localized": true,
+          "type": "cds.String",
+          "length": 255
+        },
+        "descr": {
+          "@title": "{i18n>Description}",
+          "localized": true,
+          "type": "cds.String",
+          "length": 1000
+        },
+        "code": {
+          "key": true,
+          "type": "cds.String",
+          "enum": {
+            "high": {
+              "val": "H"
+            },
+            "medium": {
+              "val": "M"
+            },
+            "low": {
+              "val": "L"
+            }
+          }
+        },
+        "texts": {
+          "type": "cds.Composition",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "sap.capire.incidents.Urgency.texts",
+          "on": [
+            {
+              "ref": [
+                "texts",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            }
+          ]
+        },
+        "localized": {
+          "type": "cds.Association",
+          "target": "sap.capire.incidents.Urgency.texts",
+          "on": [
+            {
+              "ref": [
+                "localized",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            },
+            "and",
+            {
+              "ref": [
+                "localized",
+                "locale"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$user",
+                "locale"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "sap.capire.incidents.EMailAddress": {
+      "kind": "type",
+      "type": "cds.String"
+    },
+    "sap.capire.incidents.PhoneNumber": {
+      "kind": "type",
+      "type": "cds.String"
+    },
+    "ProcessorService": {
+      "@source": "srv/services.cds",
+      "kind": "service",
+      "@requires": "support"
+    },
+    "ProcessorService.Incidents": {
+      "kind": "entity",
+      "@odata.draft.enabled": true,
+      "@UI.FieldGroup#GeneratedGroup.$Type": "UI.FieldGroupType",
+      "@UI.FieldGroup#GeneratedGroup.Data": [
+        {
+          "$Type": "UI.DataField",
+          "Value": {
+            "=": "title"
+          }
+        },
+        {
+          "$Type": "UI.DataField",
+          "Label": "{i18n>Customer}",
+          "Value": {
+            "=": "customer_ID"
+          }
+        }
+      ],
+      "@UI.Facets": [
+        {
+          "$Type": "UI.CollectionFacet",
+          "Label": "{i18n>Overview}",
+          "ID": "i18nOverview",
+          "Facets": [
+            {
+              "$Type": "UI.ReferenceFacet",
+              "ID": "GeneratedFacet1",
+              "Label": "{i18n>GeneralInformation}",
+              "Target": "@UI.FieldGroup#GeneratedGroup"
+            },
+            {
+              "$Type": "UI.ReferenceFacet",
+              "Label": "{i18n>Details}",
+              "ID": "i18nDetails",
+              "Target": "@UI.FieldGroup#i18nDetails"
+            }
+          ]
+        },
+        {
+          "$Type": "UI.ReferenceFacet",
+          "Label": "{i18n>Conversation}",
+          "ID": "i18nConversation",
+          "Target": "conversation/@UI.LineItem#i18nConversation"
+        }
+      ],
+      "@UI.LineItem": [
+        {
+          "$Type": "UI.DataField",
+          "Value": {
+            "=": "title"
+          },
+          "Label": "{i18n>Title}"
+        },
+        {
+          "$Type": "UI.DataField",
+          "Value": {
+            "=": "customer.name"
+          },
+          "Label": "{i18n>Customer}"
+        },
+        {
+          "$Type": "UI.DataField",
+          "Value": {
+            "=": "status.descr"
+          },
+          "Label": "{i18n>Status}",
+          "Criticality": {
+            "=": "status.criticality"
+          }
+        },
+        {
+          "$Type": "UI.DataField",
+          "Value": {
+            "=": "urgency.descr"
+          },
+          "Label": "{i18n>Urgency}"
+        }
+      ],
+      "@UI.SelectionFields": [
+        {
+          "=": "status_code"
+        },
+        {
+          "=": "urgency_code"
+        }
+      ],
+      "@UI.HeaderInfo.Title.$Type": "UI.DataField",
+      "@UI.HeaderInfo.Title.Value": {
+        "=": "title"
+      },
+      "@UI.HeaderInfo.TypeName": "",
+      "@UI.HeaderInfo.TypeNamePlural": "",
+      "@UI.HeaderInfo.Description.$Type": "UI.DataField",
+      "@UI.HeaderInfo.Description.Value": {
+        "=": "customer.name"
+      },
+      "@UI.HeaderInfo.TypeImageUrl": "sap-icon://alert",
+      "@UI.FieldGroup#i18nDetails.$Type": "UI.FieldGroupType",
+      "@UI.FieldGroup#i18nDetails.Data": [
+        {
+          "$Type": "UI.DataField",
+          "Value": {
+            "=": "status_code"
+          }
+        },
+        {
+          "$Type": "UI.DataField",
+          "Value": {
+            "=": "urgency_code"
+          }
+        }
+      ],
+      "projection": {
+        "from": {
+          "ref": [
+            "sap.capire.incidents.Incidents"
+          ]
+        }
+      },
+      "elements": {
+        "ID": {
+          "key": true,
+          "type": "cds.UUID"
+        },
+        "createdAt": {
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@UI.HiddenFilter": true,
+          "@UI.ExcludeFromNavigationContext": true,
+          "@Core.Immutable": true,
+          "@title": "{i18n>CreatedAt}",
+          "@readonly": true,
+          "type": "cds.Timestamp"
+        },
+        "createdBy": {
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@UI.HiddenFilter": true,
+          "@UI.ExcludeFromNavigationContext": true,
+          "@Core.Immutable": true,
+          "@title": "{i18n>CreatedBy}",
+          "@readonly": true,
+          "@description": "{i18n>UserID.Description}",
+          "type": "User",
+          "length": 255
+        },
+        "modifiedAt": {
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@cds.on.update": {
+            "=": "$now"
+          },
+          "@UI.HiddenFilter": true,
+          "@UI.ExcludeFromNavigationContext": true,
+          "@title": "{i18n>ChangedAt}",
+          "@readonly": true,
+          "type": "cds.Timestamp"
+        },
+        "modifiedBy": {
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@cds.on.update": {
+            "=": "$user"
+          },
+          "@UI.HiddenFilter": true,
+          "@UI.ExcludeFromNavigationContext": true,
+          "@title": "{i18n>ChangedBy}",
+          "@readonly": true,
+          "@description": "{i18n>UserID.Description}",
+          "type": "User",
+          "length": 255
+        },
+        "customer": {
+          "@Common.ValueList.$Type": "Common.ValueListType",
+          "@Common.ValueList.CollectionPath": "Customers",
+          "@Common.ValueList.Parameters": [
+            {
+              "$Type": "Common.ValueListParameterInOut",
+              "LocalDataProperty": {
+                "=": "customer_ID"
+              },
+              "ValueListProperty": "ID"
+            },
+            {
+              "$Type": "Common.ValueListParameterDisplayOnly",
+              "ValueListProperty": "name"
+            },
+            {
+              "$Type": "Common.ValueListParameterDisplayOnly",
+              "ValueListProperty": "email"
+            }
+          ],
+          "@Common.Text": {
+            "=": "customer.name"
+          },
+          "@Common.Text.@UI.TextArrangement": {
+            "#": "TextOnly"
+          },
+          "@Common.ValueListWithFixedValues": false,
+          "type": "cds.Association",
+          "target": "ProcessorService.Customers",
+          "keys": [
+            {
+              "ref": [
+                "ID"
+              ]
+            }
+          ]
+        },
+        "title": {
+          "@title": "Title",
+          "type": "cds.String"
+        },
+        "urgency": {
+          "@Common.Label": "{i18n>Urgency}",
+          "@Common.ValueListWithFixedValues": true,
+          "@Common.Text": {
+            "=": "urgency.descr"
+          },
+          "type": "cds.Association",
+          "target": "ProcessorService.Urgency",
+          "keys": [
+            {
+              "ref": [
+                "code"
+              ]
+            }
+          ],
+          "default": {
+            "val": "M"
+          }
+        },
+        "status": {
+          "@Common.Label": "{i18n>Status}",
+          "@Common.ValueListWithFixedValues": true,
+          "@Common.Text": {
+            "=": "status.descr"
+          },
+          "type": "cds.Association",
+          "target": "ProcessorService.Status",
+          "keys": [
+            {
+              "ref": [
+                "code"
+              ]
+            }
+          ],
+          "default": {
+            "val": "N"
+          }
+        },
+        "conversation": {
+          "type": "cds.Composition",
+          "cardinality": {
+            "max": "*"
+          },
+          "targetAspect": {
+            "elements": {
+              "ID": {
+                "key": true,
+                "type": "cds.UUID"
+              },
+              "timestamp": {
+                "@cds.on.insert": {
+                  "=": "$now"
+                },
+                "@UI.HiddenFilter": true,
+                "@UI.ExcludeFromNavigationContext": true,
+                "@Core.Immutable": true,
+                "@title": "{i18n>CreatedAt}",
+                "@readonly": true,
+                "type": {
+                  "ref": [
+                    "managed",
+                    "createdAt"
+                  ]
+                }
+              },
+              "author": {
+                "@cds.on.insert": {
+                  "=": "$user"
+                },
+                "@UI.HiddenFilter": true,
+                "@UI.ExcludeFromNavigationContext": true,
+                "@Core.Immutable": true,
+                "@title": "{i18n>CreatedBy}",
+                "@readonly": true,
+                "@description": "{i18n>UserID.Description}",
+                "type": {
+                  "ref": [
+                    "managed",
+                    "createdBy"
+                  ]
+                },
+                "length": 255
+              },
+              "message": {
+                "type": "cds.String"
+              }
+            }
+          },
+          "target": "ProcessorService.Incidents.conversation",
+          "on": [
+            {
+              "ref": [
+                "conversation",
+                "up_"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$self"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "ProcessorService.Customers": {
+      "kind": "entity",
+      "@readonly": true,
+      "projection": {
+        "from": {
+          "ref": [
+            "sap.capire.incidents.Customers"
+          ]
+        }
+      },
+      "elements": {
+        "createdAt": {
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@UI.HiddenFilter": true,
+          "@UI.ExcludeFromNavigationContext": true,
+          "@Core.Immutable": true,
+          "@title": "{i18n>CreatedAt}",
+          "@readonly": true,
+          "type": "cds.Timestamp"
+        },
+        "createdBy": {
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@UI.HiddenFilter": true,
+          "@UI.ExcludeFromNavigationContext": true,
+          "@Core.Immutable": true,
+          "@title": "{i18n>CreatedBy}",
+          "@readonly": true,
+          "@description": "{i18n>UserID.Description}",
+          "type": "User",
+          "length": 255
+        },
+        "modifiedAt": {
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@cds.on.update": {
+            "=": "$now"
+          },
+          "@UI.HiddenFilter": true,
+          "@UI.ExcludeFromNavigationContext": true,
+          "@title": "{i18n>ChangedAt}",
+          "@readonly": true,
+          "type": "cds.Timestamp"
+        },
+        "modifiedBy": {
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@cds.on.update": {
+            "=": "$user"
+          },
+          "@UI.HiddenFilter": true,
+          "@UI.ExcludeFromNavigationContext": true,
+          "@title": "{i18n>ChangedBy}",
+          "@readonly": true,
+          "@description": "{i18n>UserID.Description}",
+          "type": "User",
+          "length": 255
+        },
+        "ID": {
+          "key": true,
+          "type": "cds.String"
+        },
+        "firstName": {
+          "type": "cds.String"
+        },
+        "lastName": {
+          "type": "cds.String"
+        },
+        "name": {
+          "@Core.Computed": true,
+          "type": "cds.String"
+        },
+        "email": {
+          "type": "sap.capire.incidents.EMailAddress"
+        },
+        "phone": {
+          "type": "sap.capire.incidents.PhoneNumber"
+        },
+        "incidents": {
+          "type": "cds.Association",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "ProcessorService.Incidents",
+          "on": [
+            {
+              "ref": [
+                "incidents",
+                "customer"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$self"
+              ]
+            }
+          ]
+        },
+        "creditCardNo": {
+          "@assert.format": "^[1-9]\\d{15}$",
+          "type": "cds.String",
+          "length": 16
+        },
+        "addresses": {
+          "type": "cds.Composition",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "ProcessorService.Addresses",
+          "on": [
+            {
+              "ref": [
+                "addresses",
+                "customer"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$self"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "AdminService": {
+      "@source": "srv/services.cds",
+      "kind": "service",
+      "@requires": "admin"
+    },
+    "AdminService.Customers": {
+      "kind": "entity",
+      "projection": {
+        "from": {
+          "ref": [
+            "sap.capire.incidents.Customers"
+          ]
+        }
+      },
+      "elements": {
+        "createdAt": {
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@UI.HiddenFilter": true,
+          "@UI.ExcludeFromNavigationContext": true,
+          "@Core.Immutable": true,
+          "@title": "{i18n>CreatedAt}",
+          "@readonly": true,
+          "type": "cds.Timestamp"
+        },
+        "createdBy": {
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@UI.HiddenFilter": true,
+          "@UI.ExcludeFromNavigationContext": true,
+          "@Core.Immutable": true,
+          "@title": "{i18n>CreatedBy}",
+          "@readonly": true,
+          "@description": "{i18n>UserID.Description}",
+          "type": "User",
+          "length": 255
+        },
+        "modifiedAt": {
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@cds.on.update": {
+            "=": "$now"
+          },
+          "@UI.HiddenFilter": true,
+          "@UI.ExcludeFromNavigationContext": true,
+          "@title": "{i18n>ChangedAt}",
+          "@readonly": true,
+          "type": "cds.Timestamp"
+        },
+        "modifiedBy": {
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@cds.on.update": {
+            "=": "$user"
+          },
+          "@UI.HiddenFilter": true,
+          "@UI.ExcludeFromNavigationContext": true,
+          "@title": "{i18n>ChangedBy}",
+          "@readonly": true,
+          "@description": "{i18n>UserID.Description}",
+          "type": "User",
+          "length": 255
+        },
+        "ID": {
+          "key": true,
+          "type": "cds.String"
+        },
+        "firstName": {
+          "type": "cds.String"
+        },
+        "lastName": {
+          "type": "cds.String"
+        },
+        "name": {
+          "@Core.Computed": true,
+          "type": "cds.String"
+        },
+        "email": {
+          "type": "sap.capire.incidents.EMailAddress"
+        },
+        "phone": {
+          "type": "sap.capire.incidents.PhoneNumber"
+        },
+        "incidents": {
+          "type": "cds.Association",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "AdminService.Incidents",
+          "on": [
+            {
+              "ref": [
+                "incidents",
+                "customer"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$self"
+              ]
+            }
+          ]
+        },
+        "creditCardNo": {
+          "@assert.format": "^[1-9]\\d{15}$",
+          "type": "cds.String",
+          "length": 16
+        },
+        "addresses": {
+          "type": "cds.Composition",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "AdminService.Addresses",
+          "on": [
+            {
+              "ref": [
+                "addresses",
+                "customer"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$self"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "AdminService.Incidents": {
+      "kind": "entity",
+      "projection": {
+        "from": {
+          "ref": [
+            "sap.capire.incidents.Incidents"
+          ]
+        }
+      },
+      "elements": {
+        "ID": {
+          "key": true,
+          "type": "cds.UUID"
+        },
+        "createdAt": {
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@UI.HiddenFilter": true,
+          "@UI.ExcludeFromNavigationContext": true,
+          "@Core.Immutable": true,
+          "@title": "{i18n>CreatedAt}",
+          "@readonly": true,
+          "type": "cds.Timestamp"
+        },
+        "createdBy": {
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@UI.HiddenFilter": true,
+          "@UI.ExcludeFromNavigationContext": true,
+          "@Core.Immutable": true,
+          "@title": "{i18n>CreatedBy}",
+          "@readonly": true,
+          "@description": "{i18n>UserID.Description}",
+          "type": "User",
+          "length": 255
+        },
+        "modifiedAt": {
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@cds.on.update": {
+            "=": "$now"
+          },
+          "@UI.HiddenFilter": true,
+          "@UI.ExcludeFromNavigationContext": true,
+          "@title": "{i18n>ChangedAt}",
+          "@readonly": true,
+          "type": "cds.Timestamp"
+        },
+        "modifiedBy": {
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@cds.on.update": {
+            "=": "$user"
+          },
+          "@UI.HiddenFilter": true,
+          "@UI.ExcludeFromNavigationContext": true,
+          "@title": "{i18n>ChangedBy}",
+          "@readonly": true,
+          "@description": "{i18n>UserID.Description}",
+          "type": "User",
+          "length": 255
+        },
+        "customer": {
+          "type": "cds.Association",
+          "target": "AdminService.Customers",
+          "keys": [
+            {
+              "ref": [
+                "ID"
+              ]
+            }
+          ]
+        },
+        "title": {
+          "@title": "Title",
+          "type": "cds.String"
+        },
+        "urgency": {
+          "type": "cds.Association",
+          "target": "AdminService.Urgency",
+          "keys": [
+            {
+              "ref": [
+                "code"
+              ]
+            }
+          ],
+          "default": {
+            "val": "M"
+          }
+        },
+        "status": {
+          "type": "cds.Association",
+          "target": "AdminService.Status",
+          "keys": [
+            {
+              "ref": [
+                "code"
+              ]
+            }
+          ],
+          "default": {
+            "val": "N"
+          }
+        },
+        "conversation": {
+          "type": "cds.Composition",
+          "cardinality": {
+            "max": "*"
+          },
+          "targetAspect": {
+            "elements": {
+              "ID": {
+                "key": true,
+                "type": "cds.UUID"
+              },
+              "timestamp": {
+                "@cds.on.insert": {
+                  "=": "$now"
+                },
+                "@UI.HiddenFilter": true,
+                "@UI.ExcludeFromNavigationContext": true,
+                "@Core.Immutable": true,
+                "@title": "{i18n>CreatedAt}",
+                "@readonly": true,
+                "type": {
+                  "ref": [
+                    "managed",
+                    "createdAt"
+                  ]
+                }
+              },
+              "author": {
+                "@cds.on.insert": {
+                  "=": "$user"
+                },
+                "@UI.HiddenFilter": true,
+                "@UI.ExcludeFromNavigationContext": true,
+                "@Core.Immutable": true,
+                "@title": "{i18n>CreatedBy}",
+                "@readonly": true,
+                "@description": "{i18n>UserID.Description}",
+                "type": {
+                  "ref": [
+                    "managed",
+                    "createdBy"
+                  ]
+                },
+                "length": 255
+              },
+              "message": {
+                "type": "cds.String"
+              }
+            }
+          },
+          "target": "AdminService.Incidents.conversation",
+          "on": [
+            {
+              "ref": [
+                "conversation",
+                "up_"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$self"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "cds.outbox.Messages": {
+      "kind": "entity",
+      "elements": {
+        "ID": {
+          "key": true,
+          "type": "cds.UUID"
+        },
+        "timestamp": {
+          "type": "cds.Timestamp"
+        },
+        "target": {
+          "type": "cds.String"
+        },
+        "msg": {
+          "type": "cds.LargeString"
+        },
+        "attempts": {
+          "type": "cds.Integer",
+          "default": {
+            "val": 0
+          }
+        },
+        "partition": {
+          "type": "cds.Integer",
+          "default": {
+            "val": 0
+          }
+        },
+        "lastError": {
+          "type": "cds.LargeString"
+        },
+        "lastAttemptTimestamp": {
+          "@cds.on.update": {
+            "=": "$now"
+          },
+          "type": "cds.Timestamp"
+        },
+        "status": {
+          "type": "cds.String",
+          "length": 23
+        }
+      }
+    },
+    "Language": {
+      "kind": "type",
+      "@title": "{i18n>Language}",
+      "@description": "{i18n>LanguageCode.Description}",
+      "type": "cds.Association",
+      "target": "sap.common.Languages",
+      "keys": [
+        {
+          "ref": [
+            "code"
+          ]
+        }
+      ]
+    },
+    "Currency": {
+      "kind": "type",
+      "@title": "{i18n>Currency}",
+      "@description": "{i18n>CurrencyCode.Description}",
+      "type": "cds.Association",
+      "target": "sap.common.Currencies",
+      "keys": [
+        {
+          "ref": [
+            "code"
+          ]
+        }
+      ]
+    },
+    "Country": {
+      "kind": "type",
+      "@title": "{i18n>Country}",
+      "@description": "{i18n>CountryCode.Description}",
+      "type": "cds.Association",
+      "target": "sap.common.Countries",
+      "keys": [
+        {
+          "ref": [
+            "code"
+          ]
+        }
+      ]
+    },
+    "Timezone": {
+      "kind": "type",
+      "type": "cds.Association",
+      "target": "sap.common.Timezones",
+      "keys": [
+        {
+          "ref": [
+            "code"
+          ]
+        }
+      ]
+    },
+    "sap.common": {
+      "kind": "context"
+    },
+    "sap.common.Locale": {
+      "kind": "type",
+      "@title": "{i18n>LanguageCode}",
+      "type": "cds.String",
+      "length": 14
+    },
+    "sap.common.Languages": {
+      "kind": "entity",
+      "@cds.autoexpose": true,
+      "@cds.persistence.skip": "if-unused",
+      "@UI.Identification": [
+        {
+          "Value": {
+            "=": "name"
+          }
+        }
+      ],
+      "@cds.odata.valuelist": true,
+      "includes": [
+        "sap.common.CodeList"
+      ],
+      "elements": {
+        "name": {
+          "@title": "{i18n>Name}",
+          "localized": true,
+          "type": "cds.String",
+          "length": 255
+        },
+        "descr": {
+          "@title": "{i18n>Description}",
+          "localized": true,
+          "type": "cds.String",
+          "length": 1000
+        },
+        "code": {
+          "@Common.Text": {
+            "=": "name"
+          },
+          "@title": "{i18n>LanguageCode}",
+          "key": true,
+          "type": "sap.common.Locale",
+          "length": 14
+        },
+        "texts": {
+          "type": "cds.Composition",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "sap.common.Languages.texts",
+          "on": [
+            {
+              "ref": [
+                "texts",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            }
+          ]
+        },
+        "localized": {
+          "type": "cds.Association",
+          "target": "sap.common.Languages.texts",
+          "on": [
+            {
+              "ref": [
+                "localized",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            },
+            "and",
+            {
+              "ref": [
+                "localized",
+                "locale"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$user",
+                "locale"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "sap.common.Countries": {
+      "kind": "entity",
+      "@cds.autoexpose": true,
+      "@cds.persistence.skip": "if-unused",
+      "@UI.Identification": [
+        {
+          "Value": {
+            "=": "name"
+          }
+        }
+      ],
+      "@cds.odata.valuelist": true,
+      "includes": [
+        "sap.common.CodeList"
+      ],
+      "elements": {
+        "name": {
+          "@title": "{i18n>Name}",
+          "localized": true,
+          "type": "cds.String",
+          "length": 255
+        },
+        "descr": {
+          "@title": "{i18n>Description}",
+          "localized": true,
+          "type": "cds.String",
+          "length": 1000
+        },
+        "code": {
+          "@title": "{i18n>CountryCode}",
+          "@Common.Text": {
+            "=": "name"
+          },
+          "key": true,
+          "type": "cds.String",
+          "length": 3
+        },
+        "texts": {
+          "type": "cds.Composition",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "sap.common.Countries.texts",
+          "on": [
+            {
+              "ref": [
+                "texts",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            }
+          ]
+        },
+        "localized": {
+          "type": "cds.Association",
+          "target": "sap.common.Countries.texts",
+          "on": [
+            {
+              "ref": [
+                "localized",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            },
+            "and",
+            {
+              "ref": [
+                "localized",
+                "locale"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$user",
+                "locale"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "sap.common.Currencies": {
+      "kind": "entity",
+      "@cds.autoexpose": true,
+      "@cds.persistence.skip": "if-unused",
+      "@UI.Identification": [
+        {
+          "Value": {
+            "=": "name"
+          }
+        }
+      ],
+      "@cds.odata.valuelist": true,
+      "includes": [
+        "sap.common.CodeList"
+      ],
+      "elements": {
+        "name": {
+          "@title": "{i18n>Name}",
+          "localized": true,
+          "type": "cds.String",
+          "length": 255
+        },
+        "descr": {
+          "@title": "{i18n>Description}",
+          "localized": true,
+          "type": "cds.String",
+          "length": 1000
+        },
+        "code": {
+          "@title": "{i18n>CurrencyCode}",
+          "@Common.Text": {
+            "=": "name"
+          },
+          "key": true,
+          "type": "cds.String",
+          "length": 3
+        },
+        "symbol": {
+          "@title": "{i18n>CurrencySymbol}",
+          "type": "cds.String",
+          "length": 5
+        },
+        "minorUnit": {
+          "@title": "{i18n>CurrencyMinorUnit}",
+          "type": "cds.Int16"
+        },
+        "texts": {
+          "type": "cds.Composition",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "sap.common.Currencies.texts",
+          "on": [
+            {
+              "ref": [
+                "texts",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            }
+          ]
+        },
+        "localized": {
+          "type": "cds.Association",
+          "target": "sap.common.Currencies.texts",
+          "on": [
+            {
+              "ref": [
+                "localized",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            },
+            "and",
+            {
+              "ref": [
+                "localized",
+                "locale"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$user",
+                "locale"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "sap.common.Timezones": {
+      "kind": "entity",
+      "@cds.autoexpose": true,
+      "@cds.persistence.skip": "if-unused",
+      "@UI.Identification": [
+        {
+          "Value": {
+            "=": "name"
+          }
+        }
+      ],
+      "@cds.odata.valuelist": true,
+      "includes": [
+        "sap.common.CodeList"
+      ],
+      "elements": {
+        "name": {
+          "@title": "{i18n>Name}",
+          "localized": true,
+          "type": "cds.String",
+          "length": 255
+        },
+        "descr": {
+          "@title": "{i18n>Description}",
+          "localized": true,
+          "type": "cds.String",
+          "length": 1000
+        },
+        "code": {
+          "@title": "{i18n>TimeZoneCode}",
+          "key": true,
+          "type": "cds.String",
+          "length": 100
+        },
+        "texts": {
+          "type": "cds.Composition",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "sap.common.Timezones.texts",
+          "on": [
+            {
+              "ref": [
+                "texts",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            }
+          ]
+        },
+        "localized": {
+          "type": "cds.Association",
+          "target": "sap.common.Timezones.texts",
+          "on": [
+            {
+              "ref": [
+                "localized",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            },
+            "and",
+            {
+              "ref": [
+                "localized",
+                "locale"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$user",
+                "locale"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "sap.common.CodeList": {
+      "kind": "aspect",
+      "@cds.autoexpose": true,
+      "@cds.persistence.skip": "if-unused",
+      "@UI.Identification": [
+        {
+          "Value": {
+            "=": "name"
+          }
+        }
+      ],
+      "@cds.odata.valuelist": true,
+      "elements": {
+        "name": {
+          "@title": "{i18n>Name}",
+          "localized": true,
+          "type": "cds.String",
+          "length": 255
+        },
+        "descr": {
+          "@title": "{i18n>Description}",
+          "localized": true,
+          "type": "cds.String",
+          "length": 1000
+        }
+      }
+    },
+    "sap.common.TextsAspect": {
+      "kind": "aspect",
+      "elements": {
+        "locale": {
+          "@title": "{i18n>LanguageCode}",
+          "key": true,
+          "type": "sap.common.Locale",
+          "length": 14
+        }
+      }
+    },
+    "cuid": {
+      "kind": "aspect",
+      "elements": {
+        "ID": {
+          "key": true,
+          "type": "cds.UUID"
+        }
+      }
+    },
+    "managed": {
+      "kind": "aspect",
+      "elements": {
+        "createdAt": {
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@UI.HiddenFilter": true,
+          "@UI.ExcludeFromNavigationContext": true,
+          "@Core.Immutable": true,
+          "@title": "{i18n>CreatedAt}",
+          "@readonly": true,
+          "type": "cds.Timestamp"
+        },
+        "createdBy": {
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@UI.HiddenFilter": true,
+          "@UI.ExcludeFromNavigationContext": true,
+          "@Core.Immutable": true,
+          "@title": "{i18n>CreatedBy}",
+          "@readonly": true,
+          "@description": "{i18n>UserID.Description}",
+          "type": "User",
+          "length": 255
+        },
+        "modifiedAt": {
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@cds.on.update": {
+            "=": "$now"
+          },
+          "@UI.HiddenFilter": true,
+          "@UI.ExcludeFromNavigationContext": true,
+          "@title": "{i18n>ChangedAt}",
+          "@readonly": true,
+          "type": "cds.Timestamp"
+        },
+        "modifiedBy": {
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@cds.on.update": {
+            "=": "$user"
+          },
+          "@UI.HiddenFilter": true,
+          "@UI.ExcludeFromNavigationContext": true,
+          "@title": "{i18n>ChangedBy}",
+          "@readonly": true,
+          "@description": "{i18n>UserID.Description}",
+          "type": "User",
+          "length": 255
+        }
+      }
+    },
+    "temporal": {
+      "kind": "aspect",
+      "elements": {
+        "validFrom": {
+          "@cds.valid.from": true,
+          "type": "cds.Timestamp"
+        },
+        "validTo": {
+          "@cds.valid.to": true,
+          "type": "cds.Timestamp"
+        }
+      }
+    },
+    "User": {
+      "kind": "type",
+      "@title": "{i18n>UserID}",
+      "@description": "{i18n>UserID.Description}",
+      "type": "cds.String",
+      "length": 255
+    },
+    "sap.capire.incidents.Incidents.conversation": {
+      "kind": "entity",
+      "elements": {
+        "up_": {
+          "key": true,
+          "type": "cds.Association",
+          "cardinality": {
+            "min": 1,
+            "max": 1
+          },
+          "target": "sap.capire.incidents.Incidents",
+          "keys": [
+            {
+              "ref": [
+                "ID"
+              ]
+            }
+          ],
+          "notNull": true
+        },
+        "ID": {
+          "key": true,
+          "type": "cds.UUID"
+        },
+        "timestamp": {
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@UI.HiddenFilter": true,
+          "@UI.ExcludeFromNavigationContext": true,
+          "@Core.Immutable": true,
+          "@title": "{i18n>CreatedAt}",
+          "@readonly": true,
+          "type": {
+            "ref": [
+              "managed",
+              "createdAt"
+            ]
+          }
+        },
+        "author": {
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@UI.HiddenFilter": true,
+          "@UI.ExcludeFromNavigationContext": true,
+          "@Core.Immutable": true,
+          "@title": "{i18n>CreatedBy}",
+          "@readonly": true,
+          "@description": "{i18n>UserID.Description}",
+          "type": {
+            "ref": [
+              "managed",
+              "createdBy"
+            ]
+          },
+          "length": 255
+        },
+        "message": {
+          "type": "cds.String"
+        }
+      }
+    },
+    "sap.capire.incidents.Status.texts": {
+      "kind": "entity",
+      "@odata.draft.enabled": false,
+      "includes": [
+        "sap.common.TextsAspect"
+      ],
+      "elements": {
+        "locale": {
+          "@title": "{i18n>LanguageCode}",
+          "key": true,
+          "type": "sap.common.Locale",
+          "length": 14
+        },
+        "name": {
+          "@title": "{i18n>Name}",
+          "localized": null,
+          "type": "cds.String",
+          "length": 255
+        },
+        "descr": {
+          "@title": "{i18n>Description}",
+          "localized": null,
+          "type": "cds.String",
+          "length": 1000
+        },
+        "code": {
+          "@odata.containment.ignore": true,
+          "key": true,
+          "type": "cds.String",
+          "enum": {
+            "new": {
+              "val": "N"
+            },
+            "assigned": {
+              "val": "A"
+            },
+            "in_process": {
+              "val": "I"
+            },
+            "on_hold": {
+              "val": "H"
+            },
+            "resolved": {
+              "val": "R"
+            },
+            "closed": {
+              "val": "C"
+            }
+          }
+        }
+      }
+    },
+    "sap.capire.incidents.Urgency.texts": {
+      "kind": "entity",
+      "@odata.draft.enabled": false,
+      "includes": [
+        "sap.common.TextsAspect"
+      ],
+      "elements": {
+        "locale": {
+          "@title": "{i18n>LanguageCode}",
+          "key": true,
+          "type": "sap.common.Locale",
+          "length": 14
+        },
+        "name": {
+          "@title": "{i18n>Name}",
+          "localized": null,
+          "type": "cds.String",
+          "length": 255
+        },
+        "descr": {
+          "@title": "{i18n>Description}",
+          "localized": null,
+          "type": "cds.String",
+          "length": 1000
+        },
+        "code": {
+          "@odata.containment.ignore": true,
+          "key": true,
+          "type": "cds.String",
+          "enum": {
+            "high": {
+              "val": "H"
+            },
+            "medium": {
+              "val": "M"
+            },
+            "low": {
+              "val": "L"
+            }
+          }
+        }
+      }
+    },
+    "sap.common.Languages.texts": {
+      "kind": "entity",
+      "@odata.draft.enabled": false,
+      "includes": [
+        "sap.common.TextsAspect"
+      ],
+      "elements": {
+        "locale": {
+          "@title": "{i18n>LanguageCode}",
+          "key": true,
+          "type": "sap.common.Locale",
+          "length": 14
+        },
+        "name": {
+          "@title": "{i18n>Name}",
+          "localized": null,
+          "type": "cds.String",
+          "length": 255
+        },
+        "descr": {
+          "@title": "{i18n>Description}",
+          "localized": null,
+          "type": "cds.String",
+          "length": 1000
+        },
+        "code": {
+          "@odata.containment.ignore": true,
+          "@Common.Text": {
+            "=": "name"
+          },
+          "@title": "{i18n>LanguageCode}",
+          "key": true,
+          "type": "sap.common.Locale",
+          "length": 14
+        }
+      }
+    },
+    "sap.common.Countries.texts": {
+      "kind": "entity",
+      "@odata.draft.enabled": false,
+      "includes": [
+        "sap.common.TextsAspect"
+      ],
+      "elements": {
+        "locale": {
+          "@title": "{i18n>LanguageCode}",
+          "key": true,
+          "type": "sap.common.Locale",
+          "length": 14
+        },
+        "name": {
+          "@title": "{i18n>Name}",
+          "localized": null,
+          "type": "cds.String",
+          "length": 255
+        },
+        "descr": {
+          "@title": "{i18n>Description}",
+          "localized": null,
+          "type": "cds.String",
+          "length": 1000
+        },
+        "code": {
+          "@odata.containment.ignore": true,
+          "@title": "{i18n>CountryCode}",
+          "@Common.Text": {
+            "=": "name"
+          },
+          "key": true,
+          "type": "cds.String",
+          "length": 3
+        }
+      }
+    },
+    "sap.common.Currencies.texts": {
+      "kind": "entity",
+      "@odata.draft.enabled": false,
+      "includes": [
+        "sap.common.TextsAspect"
+      ],
+      "elements": {
+        "locale": {
+          "@title": "{i18n>LanguageCode}",
+          "key": true,
+          "type": "sap.common.Locale",
+          "length": 14
+        },
+        "name": {
+          "@title": "{i18n>Name}",
+          "localized": null,
+          "type": "cds.String",
+          "length": 255
+        },
+        "descr": {
+          "@title": "{i18n>Description}",
+          "localized": null,
+          "type": "cds.String",
+          "length": 1000
+        },
+        "code": {
+          "@odata.containment.ignore": true,
+          "@title": "{i18n>CurrencyCode}",
+          "@Common.Text": {
+            "=": "name"
+          },
+          "key": true,
+          "type": "cds.String",
+          "length": 3
+        }
+      }
+    },
+    "sap.common.Timezones.texts": {
+      "kind": "entity",
+      "@odata.draft.enabled": false,
+      "includes": [
+        "sap.common.TextsAspect"
+      ],
+      "elements": {
+        "locale": {
+          "@title": "{i18n>LanguageCode}",
+          "key": true,
+          "type": "sap.common.Locale",
+          "length": 14
+        },
+        "name": {
+          "@title": "{i18n>Name}",
+          "localized": null,
+          "type": "cds.String",
+          "length": 255
+        },
+        "descr": {
+          "@title": "{i18n>Description}",
+          "localized": null,
+          "type": "cds.String",
+          "length": 1000
+        },
+        "code": {
+          "@odata.containment.ignore": true,
+          "@title": "{i18n>TimeZoneCode}",
+          "key": true,
+          "type": "cds.String",
+          "length": 100
+        }
+      }
+    },
+    "ProcessorService.Urgency": {
+      "kind": "entity",
+      "@cds.autoexposed": true,
+      "@cds.autoexpose": true,
+      "@cds.persistence.skip": "if-unused",
+      "@UI.Identification": [
+        {
+          "Value": {
+            "=": "name"
+          }
+        }
+      ],
+      "@cds.odata.valuelist": true,
+      "projection": {
+        "from": {
+          "ref": [
+            "sap.capire.incidents.Urgency"
+          ]
+        }
+      },
+      "elements": {
+        "name": {
+          "@title": "{i18n>Name}",
+          "localized": true,
+          "type": "cds.String",
+          "length": 255
+        },
+        "descr": {
+          "@title": "{i18n>Description}",
+          "localized": true,
+          "type": "cds.String",
+          "length": 1000
+        },
+        "code": {
+          "@Common.Text": {
+            "=": "descr"
+          },
+          "key": true,
+          "type": "cds.String",
+          "enum": {
+            "high": {
+              "val": "H"
+            },
+            "medium": {
+              "val": "M"
+            },
+            "low": {
+              "val": "L"
+            }
+          }
+        },
+        "texts": {
+          "type": "cds.Composition",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "ProcessorService.Urgency.texts",
+          "on": [
+            {
+              "ref": [
+                "texts",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            }
+          ]
+        },
+        "localized": {
+          "type": "cds.Association",
+          "target": "ProcessorService.Urgency.texts",
+          "on": [
+            {
+              "ref": [
+                "localized",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            },
+            "and",
+            {
+              "ref": [
+                "localized",
+                "locale"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$user",
+                "locale"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "ProcessorService.Status": {
+      "kind": "entity",
+      "@cds.autoexposed": true,
+      "@cds.autoexpose": true,
+      "@cds.persistence.skip": "if-unused",
+      "@UI.Identification": [
+        {
+          "Value": {
+            "=": "name"
+          }
+        }
+      ],
+      "@cds.odata.valuelist": true,
+      "projection": {
+        "from": {
+          "ref": [
+            "sap.capire.incidents.Status"
+          ]
+        }
+      },
+      "elements": {
+        "name": {
+          "@title": "{i18n>Name}",
+          "localized": true,
+          "type": "cds.String",
+          "length": 255
+        },
+        "descr": {
+          "@title": "{i18n>Description}",
+          "localized": true,
+          "type": "cds.String",
+          "length": 1000
+        },
+        "code": {
+          "@Common.Text": {
+            "=": "descr"
+          },
+          "key": true,
+          "type": "cds.String",
+          "enum": {
+            "new": {
+              "val": "N"
+            },
+            "assigned": {
+              "val": "A"
+            },
+            "in_process": {
+              "val": "I"
+            },
+            "on_hold": {
+              "val": "H"
+            },
+            "resolved": {
+              "val": "R"
+            },
+            "closed": {
+              "val": "C"
+            }
+          }
+        },
+        "criticality": {
+          "type": "cds.Integer"
+        },
+        "texts": {
+          "type": "cds.Composition",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "ProcessorService.Status.texts",
+          "on": [
+            {
+              "ref": [
+                "texts",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            }
+          ]
+        },
+        "localized": {
+          "type": "cds.Association",
+          "target": "ProcessorService.Status.texts",
+          "on": [
+            {
+              "ref": [
+                "localized",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            },
+            "and",
+            {
+              "ref": [
+                "localized",
+                "locale"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$user",
+                "locale"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "ProcessorService.Incidents.conversation": {
+      "kind": "entity",
+      "@cds.autoexposed": true,
+      "@UI.LineItem#i18nConversation": [
+        {
+          "$Type": "UI.DataField",
+          "Value": {
+            "=": "author"
+          },
+          "Label": "{i18n>Author}"
+        },
+        {
+          "$Type": "UI.DataField",
+          "Value": {
+            "=": "message"
+          },
+          "Label": "{i18n>Message}"
+        },
+        {
+          "$Type": "UI.DataField",
+          "Value": {
+            "=": "timestamp"
+          },
+          "Label": "{i18n>Date}"
+        }
+      ],
+      "projection": {
+        "from": {
+          "ref": [
+            "sap.capire.incidents.Incidents.conversation"
+          ]
+        }
+      },
+      "elements": {
+        "up_": {
+          "key": true,
+          "type": "cds.Association",
+          "cardinality": {
+            "min": 1,
+            "max": 1
+          },
+          "target": "ProcessorService.Incidents",
+          "keys": [
+            {
+              "ref": [
+                "ID"
+              ]
+            }
+          ],
+          "notNull": true
+        },
+        "ID": {
+          "key": true,
+          "type": "cds.UUID"
+        },
+        "timestamp": {
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@UI.HiddenFilter": true,
+          "@UI.ExcludeFromNavigationContext": true,
+          "@Core.Immutable": true,
+          "@title": "{i18n>CreatedAt}",
+          "@readonly": true,
+          "type": {
+            "ref": [
+              "managed",
+              "createdAt"
+            ]
+          }
+        },
+        "author": {
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@UI.HiddenFilter": true,
+          "@UI.ExcludeFromNavigationContext": true,
+          "@Core.Immutable": true,
+          "@title": "{i18n>CreatedBy}",
+          "@readonly": true,
+          "@description": "{i18n>UserID.Description}",
+          "type": {
+            "ref": [
+              "managed",
+              "createdBy"
+            ]
+          },
+          "length": 255
+        },
+        "message": {
+          "type": "cds.String"
+        }
+      }
+    },
+    "ProcessorService.Addresses": {
+      "kind": "entity",
+      "@cds.autoexposed": true,
+      "projection": {
+        "from": {
+          "ref": [
+            "sap.capire.incidents.Addresses"
+          ]
+        }
+      },
+      "elements": {
+        "ID": {
+          "key": true,
+          "type": "cds.UUID"
+        },
+        "createdAt": {
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@UI.HiddenFilter": true,
+          "@UI.ExcludeFromNavigationContext": true,
+          "@Core.Immutable": true,
+          "@title": "{i18n>CreatedAt}",
+          "@readonly": true,
+          "type": "cds.Timestamp"
+        },
+        "createdBy": {
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@UI.HiddenFilter": true,
+          "@UI.ExcludeFromNavigationContext": true,
+          "@Core.Immutable": true,
+          "@title": "{i18n>CreatedBy}",
+          "@readonly": true,
+          "@description": "{i18n>UserID.Description}",
+          "type": "User",
+          "length": 255
+        },
+        "modifiedAt": {
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@cds.on.update": {
+            "=": "$now"
+          },
+          "@UI.HiddenFilter": true,
+          "@UI.ExcludeFromNavigationContext": true,
+          "@title": "{i18n>ChangedAt}",
+          "@readonly": true,
+          "type": "cds.Timestamp"
+        },
+        "modifiedBy": {
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@cds.on.update": {
+            "=": "$user"
+          },
+          "@UI.HiddenFilter": true,
+          "@UI.ExcludeFromNavigationContext": true,
+          "@title": "{i18n>ChangedBy}",
+          "@readonly": true,
+          "@description": "{i18n>UserID.Description}",
+          "type": "User",
+          "length": 255
+        },
+        "customer": {
+          "type": "cds.Association",
+          "target": "ProcessorService.Customers",
+          "keys": [
+            {
+              "ref": [
+                "ID"
+              ]
+            }
+          ]
+        },
+        "city": {
+          "type": "cds.String"
+        },
+        "postCode": {
+          "type": "cds.String"
+        },
+        "streetAddress": {
+          "type": "cds.String"
+        }
+      }
+    },
+    "AdminService.Addresses": {
+      "kind": "entity",
+      "@cds.autoexposed": true,
+      "projection": {
+        "from": {
+          "ref": [
+            "sap.capire.incidents.Addresses"
+          ]
+        }
+      },
+      "elements": {
+        "ID": {
+          "key": true,
+          "type": "cds.UUID"
+        },
+        "createdAt": {
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@UI.HiddenFilter": true,
+          "@UI.ExcludeFromNavigationContext": true,
+          "@Core.Immutable": true,
+          "@title": "{i18n>CreatedAt}",
+          "@readonly": true,
+          "type": "cds.Timestamp"
+        },
+        "createdBy": {
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@UI.HiddenFilter": true,
+          "@UI.ExcludeFromNavigationContext": true,
+          "@Core.Immutable": true,
+          "@title": "{i18n>CreatedBy}",
+          "@readonly": true,
+          "@description": "{i18n>UserID.Description}",
+          "type": "User",
+          "length": 255
+        },
+        "modifiedAt": {
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@cds.on.update": {
+            "=": "$now"
+          },
+          "@UI.HiddenFilter": true,
+          "@UI.ExcludeFromNavigationContext": true,
+          "@title": "{i18n>ChangedAt}",
+          "@readonly": true,
+          "type": "cds.Timestamp"
+        },
+        "modifiedBy": {
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@cds.on.update": {
+            "=": "$user"
+          },
+          "@UI.HiddenFilter": true,
+          "@UI.ExcludeFromNavigationContext": true,
+          "@title": "{i18n>ChangedBy}",
+          "@readonly": true,
+          "@description": "{i18n>UserID.Description}",
+          "type": "User",
+          "length": 255
+        },
+        "customer": {
+          "type": "cds.Association",
+          "target": "AdminService.Customers",
+          "keys": [
+            {
+              "ref": [
+                "ID"
+              ]
+            }
+          ]
+        },
+        "city": {
+          "type": "cds.String"
+        },
+        "postCode": {
+          "type": "cds.String"
+        },
+        "streetAddress": {
+          "type": "cds.String"
+        }
+      }
+    },
+    "AdminService.Urgency": {
+      "kind": "entity",
+      "@cds.autoexposed": true,
+      "@cds.autoexpose": true,
+      "@cds.persistence.skip": "if-unused",
+      "@UI.Identification": [
+        {
+          "Value": {
+            "=": "name"
+          }
+        }
+      ],
+      "@cds.odata.valuelist": true,
+      "projection": {
+        "from": {
+          "ref": [
+            "sap.capire.incidents.Urgency"
+          ]
+        }
+      },
+      "elements": {
+        "name": {
+          "@title": "{i18n>Name}",
+          "localized": true,
+          "type": "cds.String",
+          "length": 255
+        },
+        "descr": {
+          "@title": "{i18n>Description}",
+          "localized": true,
+          "type": "cds.String",
+          "length": 1000
+        },
+        "code": {
+          "key": true,
+          "type": "cds.String",
+          "enum": {
+            "high": {
+              "val": "H"
+            },
+            "medium": {
+              "val": "M"
+            },
+            "low": {
+              "val": "L"
+            }
+          }
+        },
+        "texts": {
+          "type": "cds.Composition",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "AdminService.Urgency.texts",
+          "on": [
+            {
+              "ref": [
+                "texts",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            }
+          ]
+        },
+        "localized": {
+          "type": "cds.Association",
+          "target": "AdminService.Urgency.texts",
+          "on": [
+            {
+              "ref": [
+                "localized",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            },
+            "and",
+            {
+              "ref": [
+                "localized",
+                "locale"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$user",
+                "locale"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "AdminService.Status": {
+      "kind": "entity",
+      "@cds.autoexposed": true,
+      "@cds.autoexpose": true,
+      "@cds.persistence.skip": "if-unused",
+      "@UI.Identification": [
+        {
+          "Value": {
+            "=": "name"
+          }
+        }
+      ],
+      "@cds.odata.valuelist": true,
+      "projection": {
+        "from": {
+          "ref": [
+            "sap.capire.incidents.Status"
+          ]
+        }
+      },
+      "elements": {
+        "name": {
+          "@title": "{i18n>Name}",
+          "localized": true,
+          "type": "cds.String",
+          "length": 255
+        },
+        "descr": {
+          "@title": "{i18n>Description}",
+          "localized": true,
+          "type": "cds.String",
+          "length": 1000
+        },
+        "code": {
+          "key": true,
+          "type": "cds.String",
+          "enum": {
+            "new": {
+              "val": "N"
+            },
+            "assigned": {
+              "val": "A"
+            },
+            "in_process": {
+              "val": "I"
+            },
+            "on_hold": {
+              "val": "H"
+            },
+            "resolved": {
+              "val": "R"
+            },
+            "closed": {
+              "val": "C"
+            }
+          }
+        },
+        "criticality": {
+          "type": "cds.Integer"
+        },
+        "texts": {
+          "type": "cds.Composition",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "AdminService.Status.texts",
+          "on": [
+            {
+              "ref": [
+                "texts",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            }
+          ]
+        },
+        "localized": {
+          "type": "cds.Association",
+          "target": "AdminService.Status.texts",
+          "on": [
+            {
+              "ref": [
+                "localized",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            },
+            "and",
+            {
+              "ref": [
+                "localized",
+                "locale"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$user",
+                "locale"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "AdminService.Incidents.conversation": {
+      "kind": "entity",
+      "@cds.autoexposed": true,
+      "projection": {
+        "from": {
+          "ref": [
+            "sap.capire.incidents.Incidents.conversation"
+          ]
+        }
+      },
+      "elements": {
+        "up_": {
+          "key": true,
+          "type": "cds.Association",
+          "cardinality": {
+            "min": 1,
+            "max": 1
+          },
+          "target": "AdminService.Incidents",
+          "keys": [
+            {
+              "ref": [
+                "ID"
+              ]
+            }
+          ],
+          "notNull": true
+        },
+        "ID": {
+          "key": true,
+          "type": "cds.UUID"
+        },
+        "timestamp": {
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@UI.HiddenFilter": true,
+          "@UI.ExcludeFromNavigationContext": true,
+          "@Core.Immutable": true,
+          "@title": "{i18n>CreatedAt}",
+          "@readonly": true,
+          "type": {
+            "ref": [
+              "managed",
+              "createdAt"
+            ]
+          }
+        },
+        "author": {
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@UI.HiddenFilter": true,
+          "@UI.ExcludeFromNavigationContext": true,
+          "@Core.Immutable": true,
+          "@title": "{i18n>CreatedBy}",
+          "@readonly": true,
+          "@description": "{i18n>UserID.Description}",
+          "type": {
+            "ref": [
+              "managed",
+              "createdBy"
+            ]
+          },
+          "length": 255
+        },
+        "message": {
+          "type": "cds.String"
+        }
+      }
+    },
+    "ProcessorService.Urgency.texts": {
+      "kind": "entity",
+      "@cds.autoexposed": true,
+      "@odata.draft.enabled": false,
+      "projection": {
+        "from": {
+          "ref": [
+            "sap.capire.incidents.Urgency.texts"
+          ]
+        }
+      },
+      "elements": {
+        "locale": {
+          "@title": "{i18n>LanguageCode}",
+          "key": true,
+          "type": "sap.common.Locale",
+          "length": 14
+        },
+        "name": {
+          "@title": "{i18n>Name}",
+          "localized": null,
+          "type": "cds.String",
+          "length": 255
+        },
+        "descr": {
+          "@title": "{i18n>Description}",
+          "localized": null,
+          "type": "cds.String",
+          "length": 1000
+        },
+        "code": {
+          "@odata.containment.ignore": true,
+          "key": true,
+          "type": "cds.String",
+          "enum": {
+            "high": {
+              "val": "H"
+            },
+            "medium": {
+              "val": "M"
+            },
+            "low": {
+              "val": "L"
+            }
+          }
+        }
+      }
+    },
+    "ProcessorService.Status.texts": {
+      "kind": "entity",
+      "@cds.autoexposed": true,
+      "@odata.draft.enabled": false,
+      "projection": {
+        "from": {
+          "ref": [
+            "sap.capire.incidents.Status.texts"
+          ]
+        }
+      },
+      "elements": {
+        "locale": {
+          "@title": "{i18n>LanguageCode}",
+          "key": true,
+          "type": "sap.common.Locale",
+          "length": 14
+        },
+        "name": {
+          "@title": "{i18n>Name}",
+          "localized": null,
+          "type": "cds.String",
+          "length": 255
+        },
+        "descr": {
+          "@title": "{i18n>Description}",
+          "localized": null,
+          "type": "cds.String",
+          "length": 1000
+        },
+        "code": {
+          "@odata.containment.ignore": true,
+          "key": true,
+          "type": "cds.String",
+          "enum": {
+            "new": {
+              "val": "N"
+            },
+            "assigned": {
+              "val": "A"
+            },
+            "in_process": {
+              "val": "I"
+            },
+            "on_hold": {
+              "val": "H"
+            },
+            "resolved": {
+              "val": "R"
+            },
+            "closed": {
+              "val": "C"
+            }
+          }
+        }
+      }
+    },
+    "AdminService.Urgency.texts": {
+      "kind": "entity",
+      "@cds.autoexposed": true,
+      "@odata.draft.enabled": false,
+      "projection": {
+        "from": {
+          "ref": [
+            "sap.capire.incidents.Urgency.texts"
+          ]
+        }
+      },
+      "elements": {
+        "locale": {
+          "@title": "{i18n>LanguageCode}",
+          "key": true,
+          "type": "sap.common.Locale",
+          "length": 14
+        },
+        "name": {
+          "@title": "{i18n>Name}",
+          "localized": null,
+          "type": "cds.String",
+          "length": 255
+        },
+        "descr": {
+          "@title": "{i18n>Description}",
+          "localized": null,
+          "type": "cds.String",
+          "length": 1000
+        },
+        "code": {
+          "@odata.containment.ignore": true,
+          "key": true,
+          "type": "cds.String",
+          "enum": {
+            "high": {
+              "val": "H"
+            },
+            "medium": {
+              "val": "M"
+            },
+            "low": {
+              "val": "L"
+            }
+          }
+        }
+      }
+    },
+    "AdminService.Status.texts": {
+      "kind": "entity",
+      "@cds.autoexposed": true,
+      "@odata.draft.enabled": false,
+      "projection": {
+        "from": {
+          "ref": [
+            "sap.capire.incidents.Status.texts"
+          ]
+        }
+      },
+      "elements": {
+        "locale": {
+          "@title": "{i18n>LanguageCode}",
+          "key": true,
+          "type": "sap.common.Locale",
+          "length": 14
+        },
+        "name": {
+          "@title": "{i18n>Name}",
+          "localized": null,
+          "type": "cds.String",
+          "length": 255
+        },
+        "descr": {
+          "@title": "{i18n>Description}",
+          "localized": null,
+          "type": "cds.String",
+          "length": 1000
+        },
+        "code": {
+          "@odata.containment.ignore": true,
+          "key": true,
+          "type": "cds.String",
+          "enum": {
+            "new": {
+              "val": "N"
+            },
+            "assigned": {
+              "val": "A"
+            },
+            "in_process": {
+              "val": "I"
+            },
+            "on_hold": {
+              "val": "H"
+            },
+            "resolved": {
+              "val": "R"
+            },
+            "closed": {
+              "val": "C"
+            }
+          }
+        }
+      }
+    }
+  },
+  "meta": {
+    "creator": "CDS Compiler v6.2.2",
+    "flavor": "inferred"
+  },
+  "$version": "2.0"
+}

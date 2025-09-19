@@ -1,0 +1,12 @@
+COLUMN TABLE ProcessorService_Incidents_conversation_drafts (
+  up__ID NVARCHAR(36) NOT NULL,
+  ID NVARCHAR(36) NOT NULL,
+  "TIMESTAMP" TIMESTAMP NULL,
+  author NVARCHAR(255) NULL,
+  message NVARCHAR(5000) NULL,
+  IsActiveEntity BOOLEAN,
+  HasActiveEntity BOOLEAN,
+  HasDraftEntity BOOLEAN,
+  DraftAdministrativeData_DraftUUID NVARCHAR(36) NOT NULL,
+  PRIMARY KEY(up__ID, ID)
+)

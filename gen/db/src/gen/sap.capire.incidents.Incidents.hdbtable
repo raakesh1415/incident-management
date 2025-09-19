@@ -1,0 +1,12 @@
+COLUMN TABLE sap_capire_incidents_Incidents (
+  ID NVARCHAR(36) NOT NULL,
+  createdAt TIMESTAMP,
+  createdBy NVARCHAR(255),
+  modifiedAt TIMESTAMP,
+  modifiedBy NVARCHAR(255),
+  customer_ID NVARCHAR(5000),
+  title NVARCHAR(5000),
+  urgency_code NVARCHAR(5000) DEFAULT 'M',
+  status_code NVARCHAR(5000) DEFAULT 'N',
+  PRIMARY KEY(ID)
+)

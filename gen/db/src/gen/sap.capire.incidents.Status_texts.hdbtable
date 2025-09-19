@@ -1,0 +1,7 @@
+COLUMN TABLE sap_capire_incidents_Status_texts (
+  locale NVARCHAR(14) NOT NULL,
+  name NVARCHAR(255),
+  descr NVARCHAR(1000),
+  code NVARCHAR(5000) NOT NULL,
+  PRIMARY KEY(locale, code)
+)

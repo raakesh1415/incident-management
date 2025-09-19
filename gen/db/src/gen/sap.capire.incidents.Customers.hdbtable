@@ -1,0 +1,13 @@
+COLUMN TABLE sap_capire_incidents_Customers (
+  createdAt TIMESTAMP,
+  createdBy NVARCHAR(255),
+  modifiedAt TIMESTAMP,
+  modifiedBy NVARCHAR(255),
+  ID NVARCHAR(5000) NOT NULL,
+  firstName NVARCHAR(5000),
+  lastName NVARCHAR(5000),
+  email NVARCHAR(5000),
+  phone NVARCHAR(5000),
+  creditCardNo NVARCHAR(16),
+  PRIMARY KEY(ID)
+)

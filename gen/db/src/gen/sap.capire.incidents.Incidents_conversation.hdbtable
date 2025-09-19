@@ -1,0 +1,8 @@
+COLUMN TABLE sap_capire_incidents_Incidents_conversation (
+  up__ID NVARCHAR(36) NOT NULL,
+  ID NVARCHAR(36) NOT NULL,
+  "TIMESTAMP" TIMESTAMP,
+  author NVARCHAR(255),
+  message NVARCHAR(5000),
+  PRIMARY KEY(up__ID, ID)
+)

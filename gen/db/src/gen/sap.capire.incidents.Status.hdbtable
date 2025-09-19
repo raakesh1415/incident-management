@@ -1,0 +1,7 @@
+COLUMN TABLE sap_capire_incidents_Status (
+  name NVARCHAR(255),
+  descr NVARCHAR(1000),
+  code NVARCHAR(5000) NOT NULL,
+  criticality INTEGER,
+  PRIMARY KEY(code)
+)
