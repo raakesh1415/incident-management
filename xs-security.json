@@ -27,5 +27,15 @@
       ],
       "attribute-references": []
     }
-  ]
+  ],
+  "role-collections": [
+        {
+        "name": "UserManagerRC",
+        "description": "User Manager Role Collection",
+        "role-template-references": [
+          "$XSAPPNAME.support",
+          "$XSAPPNAME.admin"
+            ]
+        }
+    ]
 }
