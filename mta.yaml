@@ -128,7 +128,7 @@ resources:
           instance:
             existing_destinations_policy: update
             destinations:
-              - Name: incident-management-srv-api
+              - Name: srv-api
                 URL: ~{srv-api/srv-url}
                 Authentication: NoAuthentication
                 Type: HTTP
