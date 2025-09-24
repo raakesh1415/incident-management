@@ -13,7 +13,7 @@
   "role-templates": [
     {
       "name": "support",
-      "description": "generated",
+      "description": "incident-management support",
       "scope-references": [
         "$XSAPPNAME.support"
       ],
@@ -21,7 +21,7 @@
     },
     {
       "name": "admin",
-      "description": "generated",
+      "description": "incident-management admin",
       "scope-references": [
         "$XSAPPNAME.admin"
       ],
