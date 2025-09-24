@@ -19,6 +19,8 @@ modules:
       buildpack: nodejs_buildpack
       readiness-health-check-type: http
       readiness-health-check-http-endpoint: /health
+      disk-quota: 256M   # added to solve InsufficientResources 
+      memory: 256M       # added to solve InsufficientResources 
     build-parameters:
       builder: npm
     provides:
@@ -147,4 +149,3 @@ resources:
           name: srv-api # must be used in xs-app.json as well
           url: ~{srv-url}
           forwardAuthToken: true
-
