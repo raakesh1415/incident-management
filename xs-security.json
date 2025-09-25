@@ -13,7 +13,7 @@
   "role-templates": [
     {
       "name": "support",
-      "description": "incident-management support",
+      "description": "",
       "scope-references": [
         "$XSAPPNAME.support"
       ],
@@ -30,12 +30,19 @@
   ],
   "role-collections": [
     {
-      "name": "UserManagerRC",
-      "description": "User Manager Role Collection",
+      "name": "support",
+      "description": "incident-management support",
       "role-template-references": [
-        "$XSAPPNAME.support",
+        "$XSAPPNAME.support"
+      ]
+    },
+    {
+      "name": "admin",
+      "description": "incident-management admin",
+      "role-template-references": [
         "$XSAPPNAME.admin"
       ]
     }
+    
   ]
 }
