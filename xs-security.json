@@ -42,6 +42,14 @@
       "role-template-references": [
         "$XSAPPNAME.admin"
       ]
+    },
+    {
+      "name": "IncidentManagementRC",
+      "description": "Incident Management Role Collection",
+      "role-template-references": [
+        "$XSAPPNAME.admin",
+        "$XSAPPNAME.support"
+      ]
     }
     
   ]
