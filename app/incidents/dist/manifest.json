@@ -1,7 +1,7 @@
 {
   "_version": "1.76.0",
   "sap.app": {
-    "id": "ns.incidents",
+    "id": "ns.incidentManagement",
     "type": "application",
     "i18n": {
       "bundleUrl": "i18n/i18n.properties",
@@ -77,10 +77,7 @@
       "i18n": {
         "type": "sap.ui.model.resource.ResourceModel",
         "settings": {
-          "bundleName": "ns.incidents.i18n.i18n",
-          "supportedLocales": [
-            ""
-          ]
+          "bundleName": "ns.incidents.i18n.i18n"
         }
       },
       "": {
