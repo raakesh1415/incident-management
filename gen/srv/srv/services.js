@@ -1,11 +1,11 @@
-const cds = require('@sap/cds')
+const cds = require('@sap/cds');
+const SapCfMailer = require("sap-cf-mailer").default;
 
 class ProcessorService extends cds.ApplicationService {
   /** Registering custom event handlers */
   init() {
     this.before("UPDATE", "Incidents", (req) => this.onUpdate(req));
     this.before("CREATE", "Incidents", (req) => this.changeUrgencyDueToSubject(req.data));
-
     return super.init();
   }
 
@@ -21,33 +21,35 @@ class ProcessorService extends cds.ApplicationService {
   }
 
   /** Custom Validation */
-  async onUpdate (req) {
-    const { status_code } = await SELECT.one(req.subject, i => i.status_code).where({ID: req.data.ID})
-    if (status_code === 'C')
-      return req.reject(`Can't modify a closed incident`)
+  async onUpdate(req) {
+    const { status_code } = await SELECT.one(req.subject, i => i.status_code).where({ ID: req.data.ID });
+    if (status_code === 'C') {
+      return req.reject(`Can't modify a closed incident`);
+    }
   }
 }
-module.exports = { ProcessorService }
 
-
-// Email service 
-const SapCfMailer = require("sap-cf-mailer").default;
+// module.exports = { ProcessorService }
 
 module.exports = cds.service.impl(function () {
-    this.on('sendMail', async () => {
-        try {
-            const transporter = new SapCfMailer("GmailSMTP"); // Match your destination
-            const result = await transporter.sendMail({
-                to: "raakesh@graduate.utm.my", //to list separated by comma
-                cc: "", //cc list separated by comma
-                subject: "Test Mail from BTP System",
-                html: "Hello from CAP!",
-                attachments: []
-            });
-            return `Email sent successfully`;
-        } catch (error) {
-            console.error('Error sending email:', error);
-            return `Error sending email: ${error.message}`;
-        }
-    });
+  // Register ProcessorService
+  cds.services['ProcessorService'] = new ProcessorService();
+
+  // Register email handler
+  this.on('sendMail', async () => {
+    try {
+      const transporter = new SapCfMailer("GmailSMTP"); // Match your destination
+      const result = await transporter.sendMail({
+        to: "raakesh@graduate.utm.my",
+        cc: "",
+        subject: "Test Mail from BTP System",
+        html: "Hello from CAP!",
+        attachments: []
+      });
+      return `Email sent successfully`;
+    } catch (error) {
+      console.error('Error sending email:', error);
+      return `Error sending email: ${error.message}`;
+    }
+  });
 });
