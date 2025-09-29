@@ -9,7 +9,8 @@
     "@cap-js/hana": "^2",
     "@sap/cds": "^9",
     "@sap/xssec": "^4",
-    "express": "^4"
+    "express": "^4",
+    "sap-cf-mailer": "^0.0.5"
   },
   "engines": {
     "node": ">=20"

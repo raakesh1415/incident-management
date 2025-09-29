@@ -20,3 +20,8 @@ service AdminService {
     entity Incidents as projection on my.Incidents;
 }
 annotate AdminService with @(requires: 'admin');
+
+// Email service
+service CatalogService { 
+    function sendMail() returns String; 
+}

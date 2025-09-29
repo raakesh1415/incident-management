@@ -1396,6 +1396,16 @@
         }
       }
     },
+    "CatalogService": {
+      "@source": "srv/services.cds",
+      "kind": "service"
+    },
+    "CatalogService.sendMail": {
+      "kind": "function",
+      "returns": {
+        "type": "cds.String"
+      }
+    },
     "cds.outbox.Messages": {
       "kind": "entity",
       "elements": {

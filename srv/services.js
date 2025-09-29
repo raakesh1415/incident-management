@@ -28,3 +28,26 @@ class ProcessorService extends cds.ApplicationService {
   }
 }
 module.exports = { ProcessorService }
+
+
+// Email service 
+const SapCfMailer = require("sap-cf-mailer").default;
+
+module.exports = cds.service.impl(function () {
+    this.on('sendMail', async () => {
+        try {
+            const transporter = new SapCfMailer("GmailSMTP"); // Match your destination
+            const result = await transporter.sendMail({
+                to: "raakesh@graduate.utm.my", //to list separated by comma
+                cc: "", //cc list separated by comma
+                subject: "Test Mail from BTP System",
+                html: "Hello from CAP!",
+                attachments: []
+            });
+            return `Email sent successfully`;
+        } catch (error) {
+            console.error('Error sending email:', error);
+            return `Error sending email: ${error.message}`;
+        }
+    });
+});
