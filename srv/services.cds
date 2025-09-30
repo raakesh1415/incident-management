@@ -23,5 +23,5 @@ annotate AdminService with @(requires: 'admin');
 
 // Email service
 service CatalogService { 
-    function sendMail() returns String; 
+    function sendMail() returns String;   // using action instead of function for POST
 }

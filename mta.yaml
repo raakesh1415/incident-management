@@ -31,6 +31,7 @@ modules:
       - name: incident-management-db
       - name: incident-management-auth
       - name: incident-management-destination
+      - name: incident-management-connectivity
 
   - name: incident-management-db-deployer
     type: hdb
@@ -119,6 +120,11 @@ resources:
       config:
         xsappname: incident-management-${org}-${space}
         tenant-mode: dedicated
+  - name: incident-management-connectivity
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: connectivity
+      service-plan: lite
   - name: incident-management-destination
     type: org.cloudfoundry.managed-service
     parameters:
